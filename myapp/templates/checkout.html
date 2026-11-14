@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Checkout — DjangoPixel{% endblock %}
+{% block content %}
+<section class="checkout-page section-wrap">
+    <div class="page-intro">
+        <span class="eyebrow">Almost yours</span>
+        <h1>Checkout</h1>
+        <p>This is a demo checkout. Your details are not saved and no payment is collected.</p>
+    </div>
+    <div class="checkout-layout">
+        <form method="post" class="checkout-form">
+            {% csrf_token %}
+            <h2>Where should we send it?</h2>
+            {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+            </div>
+            {% endfor %}
+            <button class="button button-dark button-full" type="submit">Complete demo order <span aria-hidden="true">→</span></button>
+            <a class="text-link checkout-back" href="{% url 'cart' %}">← Back to your bag</a>
+        </form>
+        <aside class="order-summary checkout-summary">
+            <h2>Your order</h2>
+            {% for item in items %}
+            <div class="checkout-item">
+                <img src="{{ item.image }}" alt="">
+                <span>{{ item.name }} <small>× {{ item.quantity }}</small></span>
+                <strong>${{ item.line_total|floatformat:2 }}</strong>
+            </div>
+            {% endfor %}
+            <div class="summary-row"><span>Subtotal</span><span>${{ subtotal|floatformat:2 }}</span></div>
+            <div class="summary-row"><span>Shipping</span><span>{% if shipping == 0 %}Free{% else %}${{ shipping|floatformat:2 }}{% endif %}</span></div>
+            <div class="summary-total"><span>Total</span><strong>${{ total|floatformat:2 }}</strong></div>
+            <div class="demo-notice">This prototype does not process payments or create a real order.</div>
+        </aside>
+    </div>
+</section>
+{% endblock %}

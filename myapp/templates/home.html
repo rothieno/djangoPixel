@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}DjangoPixel — everyday essentials{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> A little more thoughtful</span>
+        <h1>Everyday finds.<br><em>Pixel-perfect care.</em></h1>
+        <p>Useful, lovely essentials for the little moments that make a day.</p>
+        <a class="button button-dark" href="#shop">Explore the collection <span aria-hidden="true">→</span></a>
+        <div class="hero-footnote"><span>01</span> Curated with care. Ready for everyday.</div>
+    </div>
+    <div class="hero-image">
+        <img src="{% static 'images/sun.jpg' %}" alt="A warm sunset above the trees, photographed for DjangoPixel">
+        <div class="hero-image-note"><span>DJANGOPIXEL EDITION</span><span>Little moments, noticed</span></div>
+    </div>
+    <div class="hero-index">D / 001</div>
+</section>
+
+<section class="benefits" aria-label="Why shop DjangoPixel">
+    <div><span class="benefit-icon">✳</span><span>Considered by design</span></div>
+    <div><span class="benefit-icon">↗</span><span>Free shipping over $60</span></div>
+    <div><span class="benefit-icon">♡</span><span>Made for everyday use</span></div>
+</section>
+
+<section class="shop-section section-wrap" id="shop">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">The collection</span>
+            <h2>{% if is_filtered %}A good place to start{% else %}Everyday essentials{% endif %}</h2>
+        </div>
+        <span class="section-count">{{ products|length }} thoughtful finds</span>
+    </div>
+
+    <div class="category-row" aria-label="Filter by category">
+        <a class="category-chip {% if not selected_category %}is-active{% endif %}" href="{% url 'home' %}{% if query %}?q={{ query|urlencode }}{% endif %}">Everything</a>
+        {% for category in categories %}
+        <a class="category-chip {% if selected_category == category %}is-active{% endif %}" href="{% url 'home' %}?category={{ category|urlencode }}{% if query %}&q={{ query|urlencode }}{% endif %}">{{ category }}</a>
+        {% endfor %}
+    </div>
+
+    {% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+        <article class="product-card">
+            <a class="product-image-link" href="{% url 'product_detail' product.slug %}">
+                <div class="product-image">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy">
+                    {% if product.badge %}<span class="product-badge">{{ product.badge }}</span>{% endif %}
+                </div>
+            </a>
+            <div class="product-card-info">
+                <div>
+                    <span class="product-category">{{ product.category }}</span>
+                    <h3><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></h3>
+                </div>
+                <span class="product-price">${{ product.price|floatformat:2 }}</span>
+            </div>
+            <form action="{% url 'cart_add' product.slug %}" method="post" class="quick-add">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit">Add to bag <span aria-hidden="true">+</span></button>
+            </form>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-search">
+        <span class="empty-icon">⌕</span>
+        <h3>Nothing found just yet</h3>
+        <p>Try another search or take a look at everything we love.</p>
+        <a class="button button-outline" href="{% url 'home' %}">Browse all essentials</a>
+    </div>
+    {% endif %}
+</section>
+
+<section class="manifesto">
+    <span class="eyebrow">A little about DjangoPixel</span>
+    <p>We believe the things you reach for every day should feel <em>a little more special.</em></p>
+    <a class="text-link" href="{% url 'about' %}">Our story <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}

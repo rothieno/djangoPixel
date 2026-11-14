@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Your bag — DjangoPixel{% endblock %}
+{% block content %}
+<section class="cart-page section-wrap">
+    <div class="page-intro">
+        <span class="eyebrow">Your good things</span>
+        <h1>Your bag <span class="cart-title-count">({{ item_count }})</span></h1>
+    </div>
+    {% if items %}
+    <div class="cart-layout">
+        <div class="cart-items">
+            {% if amount_to_free_shipping > 0 %}
+            <div class="shipping-progress">
+                <span>Add <strong>${{ amount_to_free_shipping|floatformat:2 }}</strong> more for free shipping.</span>
+                <div class="progress-track"><span style="width: {% widthratio subtotal free_shipping_threshold 100 %}%"></span></div>
+            </div>
+            {% else %}
+            <div class="shipping-progress shipping-unlocked">Lovely — your order ships free.</div>
+            {% endif %}
+            {% for item in items %}
+            <article class="cart-item">
+                <a href="{% url 'product_detail' item.slug %}" class="cart-item-image"><img src="{{ item.image }}" alt="{{ item.name }}"></a>
+                <div class="cart-item-details">
+                    <span class="product-category">{{ item.category }}</span>
+                    <h2><a href="{% url 'product_detail' item.slug %}">{{ item.name }}</a></h2>
+                    <span class="cart-unit-price">${{ item.price|floatformat:2 }}</span>
+                    <div class="cart-actions">
+                        <form action="{% url 'cart_update' item.slug %}" method="post" class="quantity-form">
+                            {% csrf_token %}
+                            <label class="sr-only" for="qty-{{ item.slug }}">Quantity for {{ item.name }}</label>
+                            <input id="qty-{{ item.slug }}" type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99">
+                            <button type="submit" class="subtle-button">Update</button>
+                        </form>
+                        <form action="{% url 'cart_remove' item.slug %}" method="post">
+                            {% csrf_token %}<button type="submit" class="remove-button">Remove</button>
+                        </form>
+                    </div>
+                </div>
+                <strong class="cart-line-total">${{ item.line_total|floatformat:2 }}</strong>
+            </article>
+            {% endfor %}
+            <a class="text-link continue-link" href="{% url 'home' %}#shop">← Keep browsing</a>
+        </div>
+        <aside class="order-summary">
+            <h2>Order summary</h2>
+            <div class="summary-row"><span>Subtotal</span><span>${{ subtotal|floatformat:2 }}</span></div>
+            <div class="summary-row"><span>Shipping</span><span>{% if shipping == 0 %}Free{% else %}${{ shipping|floatformat:2 }}{% endif %}</span></div>
+            <div class="summary-total"><span>Total</span><strong>${{ total|floatformat:2 }}</strong></div>
+            <p class="summary-note">Taxes, if applicable, are calculated at checkout.</p>
+            <a class="button button-dark button-full" href="{% url 'checkout' %}">Continue to checkout <span aria-hidden="true">→</span></a>
+            <div class="demo-notice">Demo checkout only — no payment is collected.</div>
+        </aside>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <div class="empty-cart-icon">✳</div>
+        <h2>Your bag is taking a breather.</h2>
+        <p>When you find something you love, it’ll be right here.</p>
+        <a class="button button-dark" href="{% url 'home' %}#shop">Explore the everyday edit <span aria-hidden="true">→</span></a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — DjangoPixel{% endblock %}
+{% block content %}
+<div class="breadcrumb section-wrap">
+    <a href="{% url 'home' %}">Shop</a><span>/</span><a href="{% url 'home' %}?category={{ product.category|urlencode }}">{{ product.category }}</a><span>/</span><span>{{ product.name }}</span>
+</div>
+<section class="product-detail section-wrap">
+    <div class="detail-image">
+        <img src="{{ product.image }}" alt="{{ product.name }}">
+        {% if product.badge %}<span class="product-badge">{{ product.badge }}</span>{% endif %}
+    </div>
+    <div class="detail-copy">
+        <span class="eyebrow">{{ product.category }} · DJANGOPIXEL SELECTION</span>
+        <h1>{{ product.name }}</h1>
+        <span class="detail-price">${{ product.price|floatformat:2 }}</span>
+        <p class="detail-description">{{ product.description }}</p>
+        <div class="detail-promise"><span>✳</span> Thoughtfully selected for everyday use.</div>
+        <form action="{% url 'cart_add' product.slug %}" method="post" class="add-form">
+            {% csrf_token %}
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" name="quantity" value="1" min="1" max="99">
+            <button type="submit" class="button button-dark">Add to bag <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="shipping-note">Free shipping on orders $60 and over. Easy, friendly support if you need us.</p>
+        <a class="text-link back-link" href="{% url 'home' %}#shop">← Back to the edit</a>
+    </div>
+</section>
+{% if related_products %}
+<section class="related-section section-wrap">
+    <div class="section-heading"><div><span class="eyebrow">Pairs well with</span><h2>More good things</h2></div></div>
+    <div class="product-grid">
+        {% for item in related_products %}
+        <article class="product-card">
+            <a class="product-image-link" href="{% url 'product_detail' item.slug %}">
+                <div class="product-image"><img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy"></div>
+            </a>
+            <div class="product-card-info">
+                <div><span class="product-category">{{ item.category }}</span><h3><a href="{% url 'product_detail' item.slug %}">{{ item.name }}</a></h3></div>
+                <span class="product-price">${{ item.price|floatformat:2 }}</span>
+            </div>
+            <form action="{% url 'cart_add' item.slug %}" method="post" class="quick-add">
+                {% csrf_token %}<input type="hidden" name="quantity" value="1"><button type="submit">Add to bag <span aria-hidden="true">+</span></button>
+            </form>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

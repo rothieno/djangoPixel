@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f6f2">
+    <title>{% block title %}DjangoPixel — everyday essentials{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="announcement">Thoughtful goods for everyday living <span>·</span> Free shipping on orders $60+</div>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="wordmark" href="{% url 'home' %}" aria-label="DjangoPixel home">DjangoPixel<span>.</span></a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="{% url 'home' %}#shop">Shop</a>
+                <a href="{% url 'about' %}">Our story</a>
+                <a href="{% url 'faq' %}">FAQ</a>
+                <a href="{% url 'contact' %}">Contact</a>
+            </nav>
+            <form class="header-search" action="{% url 'home' %}" method="get" role="search">
+                <label class="sr-only" for="site-search">Search products</label>
+                <input id="site-search" type="search" name="q" value="{{ query|default:'' }}" placeholder="Search the shop">
+                <button type="submit" aria-label="Search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+                </button>
+            </form>
+            <a class="bag-link" href="{% url 'cart' %}" aria-label="Shopping bag, {{ cart_count }} items">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 13H4L5 8Z"></path><path d="M9 9V6a3 3 0 0 1 6 0v3"></path></svg>
+                <span>Bag</span><span class="bag-count">{{ cart_count }}</span>
+            </a>
+        </div>
+    </header>
+
+    {% if messages %}
+    <div class="message-stack" aria-live="polite">
+        {% for message in messages %}
+        <div class="message message-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <a class="wordmark wordmark-light" href="{% url 'home' %}">DjangoPixel<span>.</span></a>
+                <p>Thoughtful finds for everyday life.<br>Selected with care, made to be enjoyed.</p>
+            </div>
+            <div class="footer-links">
+                <span class="footer-label">Explore</span>
+                <a href="{% url 'home' %}#shop">Shop all</a>
+                <a href="{% url 'about' %}">Our story</a>
+                <a href="{% url 'faq' %}">Frequently asked questions</a>
+                <a href="{% url 'shipping_returns' %}">Shipping & returns</a>
+                <a href="{% url 'contact' %}">Get in touch</a>
+            </div>
+            <div class="footer-note">
+                <span class="footer-label">A little more good</span>
+                <p>Thoughtful design, useful details, and a lighter footprint — always.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 DjangoPixel. Demo storefront.</span>
+            <span>Made for everyday living.</span>
+        </div>
+    </footer>
+</body>
+</html>

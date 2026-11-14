@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Frequently asked questions — DjangoPixel{% endblock %}
+{% block content %}
+<section class="info-page section-wrap">
+    <header class="info-intro">
+        <span class="eyebrow">Good to know</span>
+        <h1>A few helpful answers.</h1>
+        <p>Quick notes about shopping DjangoPixel. This is a demo storefront, so some details are examples rather than live order services.</p>
+    </header>
+
+    <div class="info-layout">
+        <div class="faq-list">
+            <details class="faq-item" open>
+                <summary>What can I find in the shop?</summary>
+                <p>The collection is a sample catalog of everyday accessories, home goods, stationery, and useful essentials. Browse by category or search by product name on the <a href="{% url 'home' %}#shop">shop page</a>.</p>
+            </details>
+            <details class="faq-item">
+                <summary>How do I add an item to my bag?</summary>
+                <p>Choose an item and select “Add to bag.” Your bag is kept in your browser session while you browse. You can update quantities or remove items from the bag page.</p>
+            </details>
+            <details class="faq-item">
+                <summary>How much does shipping cost?</summary>
+                <p>This sample shop shows a $5 shipping charge on orders under ${{ free_shipping_threshold|floatformat:0 }} and free shipping at or above ${{ free_shipping_threshold|floatformat:0 }}. These are example rates, not a live shipping service. See <a href="{% url 'shipping_returns' %}">Shipping & returns</a> for details.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Can I place a real order or make a payment?</summary>
+                <p>Not yet. Checkout is a demonstration only: it does not collect payment details, save an order, or arrange delivery. Please don’t enter real personal or payment information.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Can I return or exchange something?</summary>
+                <p>This demo does not process returns or exchanges. A real store return policy and support inbox need to be configured before accepting orders. Read the <a href="{% url 'shipping_returns' %}">shipping and returns information</a>.</p>
+            </details>
+            <details class="faq-item">
+                <summary>How can I get in touch?</summary>
+                <p>Visit the <a href="{% url 'contact' %}">Contact page</a>. Its example email address is not a monitored inbox yet.</p>
+            </details>
+        </div>
+        <aside class="info-aside">
+            <span class="info-aside-icon">?</span>
+            <span class="eyebrow">Still wondering?</span>
+            <h2>We’re happy to help.</h2>
+            <p>For this demo, the contact page shows where a real shop would add its support details.</p>
+            <a class="text-link" href="{% url 'contact' %}">Visit contact <span aria-hidden="true">→</span></a>
+        </aside>
+    </div>
+</section>
+{% endblock %}

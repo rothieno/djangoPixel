@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Our story — DjangoPixel{% endblock %}
+{% block content %}
+<section class="story-page section-wrap">
+    <span class="eyebrow">A little about us</span>
+    <h1>Everyday things<br><em>deserve a little thought.</em></h1>
+    <div class="story-layout">
+        <div class="story-image"><img src="{% static 'images/pexel.jpg' %}" alt="A curious cat among the branches of a fruit tree"></div>
+        <div class="story-copy">
+            <h2>Fewer things. Better feelings.</h2>
+            <p>DjangoPixel is a small, independent shop for useful things with a little extra care in the details. We look for pieces that feel good to use, fit naturally into your life, and are made to be enjoyed.</p>
+            <p>Our collection is intentionally considered — from your first coffee to the last thing you put away at night. No clutter, no fuss. Just good things for the everyday.</p>
+            <a class="text-link" href="{% url 'home' %}#shop">Explore the collection <span aria-hidden="true">→</span></a>
+        </div>
+    </div>
+</section>
+{% endblock %}

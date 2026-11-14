@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Contact — DjangoPixel{% endblock %}
+{% block content %}
+<section class="contact-page section-wrap">
+    <div class="contact-copy">
+        <span class="eyebrow">Here if you need us</span>
+        <h1>Let’s talk<br><em>good things.</em></h1>
+        <p>Questions about an item, an order, or just want to say hello? We’d love to hear from you.</p>
+        <a class="contact-email" href="mailto:hello@djangopixel.example">hello@djangopixel.example <span aria-hidden="true">↗</span></a>
+        <span class="contact-hours">Usually here Monday–Friday, 9am–5pm.</span>
+    </div>
+    <div class="contact-card">
+        <span class="contact-card-mark">✳</span>
+        <span class="eyebrow">A note from our little shop</span>
+        <p>We’re a demo storefront, so this sample contact address doesn’t receive messages. In your own shop, replace it with an inbox you monitor.</p>
+        <a class="text-link" href="{% url 'home' %}">Back to the shop <span aria-hidden="true">→</span></a>
+    </div>
+</section>
+{% endblock %}
